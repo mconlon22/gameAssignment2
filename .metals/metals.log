@@ -1,0 +1,23 @@
+[0m2021.03.24 22:42:18 INFO  Started: Metals version 0.10.0 in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2' for client vscode 1.54.3.[0m
+[0m2021.03.24 22:42:19 INFO  time: initialize in 1.23s[0m
+[0m2021.03.24 22:42:19 WARN  Build server is not auto-connectable.[0m
+[0m2021.03.24 22:42:19 WARN  no build tool detected in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.03.25 00:18:59 INFO  shutting down Metals[0m
+[0m2021.03.25 16:59:29 INFO  Started: Metals version 0.10.0 in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2' for client vscode 1.54.3.[0m
+[0m2021.03.25 16:59:30 INFO  time: initialize in 1.28s[0m
+[0m2021.03.25 16:59:30 WARN  Build server is not auto-connectable.[0m
+[0m2021.03.25 16:59:30 WARN  no build tool detected in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.03.25 21:28:14 INFO  Started: Metals version 0.10.0 in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2' for client vscode 1.54.3.[0m
+[0m2021.03.25 21:28:16 INFO  time: initialize in 2.02s[0m
+[0m2021.03.25 21:28:20 WARN  Build server is not auto-connectable.[0m
+[0m2021.03.25 21:28:20 WARN  no build tool detected in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.03.26 01:51:04 INFO  shutting down Metals[0m
+[0m2021.03.27 17:47:48 INFO  Started: Metals version 0.10.0 in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2' for client vscode 1.54.3.[0m
+[0m2021.03.27 17:47:49 INFO  time: initialize in 1.1s[0m
+[0m2021.03.27 17:47:49 WARN  Build server is not auto-connectable.[0m
+[0m2021.03.27 17:47:49 WARN  no build tool detected in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.03.27 18:51:21 INFO  shutting down Metals[0m
+[0m2021.04.06 12:23:15 INFO  Started: Metals version 0.10.0 in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2' for client vscode 1.55.0.[0m
+[0m2021.04.06 12:23:16 INFO  time: initialize in 1.24s[0m
+[0m2021.04.06 12:23:16 WARN  Build server is not auto-connectable.[0m
+[0m2021.04.06 12:23:16 WARN  no build tool detected in workspace 'C:\Users\marti\Desktop\4thYearsem2\gameAssignment2'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
