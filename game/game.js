@@ -14,6 +14,9 @@ scene.enablePhysics();
 }
 var questions=null
 var selection=null
+var correctSelection=null
+var answersCorrect=0
+var questionNumber=0
 var i=0
 
 function getQuestions(){
@@ -21,21 +24,21 @@ function getQuestions(){
         "answer1": "1",
         "answer2": "2",
         "answer3": "3",
-        "correctAnswer": "helll",
+        "correctAnswer": "right",
         "question": "hello1"
     },
     {
         "answer1": "1",
         "answer2": "2",
         "answer3": "3",
-        "correctAnswer": "helll",
+        "correctAnswer": "right",
         "question": "hello2"
     },
     {
         "answer1": "1",
         "answer2": "2",
         "answer3": "3",
-        "correctAnswer": "helll",
+        "correctAnswer": "right",
         "question": "hello3"
     }]
     window.localStorage.setItem("questions",questions);
@@ -127,10 +130,13 @@ const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engi
 var planeWidth = 12;
 var planeHeight = 10;
 var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
+
 var DTWidth = planeWidth * 60;
 var DTHeight = planeHeight * 60;
 text = "What is the name of the kindefsd sdafsadfa";
-var answerTexture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene);
+var answerTexture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene,true);
+	answerTexture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+
 var questionCtx = answerTexture.getContext();
 var size = 70; 
 questionCtx.font = size + "px " + font_type;
@@ -141,14 +147,22 @@ var font = font_size + "px " + font_type;
 var clearColor = "transparent";
 var answerMaterial = new BABYLON.StandardMaterial("answerMat", scene);
 answerMaterial.useAlphaFromDiffuseTexture = true;
-answerTexture.drawText(text, null, null, font, "#000000", "#ffffff" ,true);
+answerTexture.drawText(text, null, null, font, "white", null ,true);
 answerMaterial.diffuseTexture = answerTexture;
 answerPlane.material = answerMaterial;
-answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+answerPlane.material.diffuseTexture.hasAlpha = true;
+    answerPlane.useAlphaFromDiffuseTexture = true;
+	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    	var context2D = answerTexture.getContext();
+        		context2D.clearRect(0, 200, 512, 512);
 
+
+	answerPlane.material.backFaceCulling = false;
 answerPlane.position.y=20
 answerPlane.position.z=20
 answerPlane.position.x=-25
+
 
 //answerpane2
 var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
@@ -312,6 +326,7 @@ answerPlane.position.x=20
         },
         (evt) => {
             selection=1
+            console.log(selection)
         }
     );
         collider.actionManager.registerAction(action);
@@ -334,6 +349,8 @@ answerPlane.position.x=20
         },
         (evt) => {
             selection=2
+                        console.log(selection)
+
         }
     );
         collider.actionManager.registerAction(action);
@@ -354,6 +371,8 @@ answerPlane.position.x=20
         },
         (evt) => {
             selection=3
+                        console.log(selection)
+
         }
     );
         collider.actionManager.registerAction(action);
@@ -378,6 +397,14 @@ answerPlane.position.x=20
     );
         collider.actionManager.registerAction(action);
     });
+
+    function checkQuestion(){
+        selections.push(selection)
+
+
+
+
+    }
 
 
 
@@ -425,8 +452,10 @@ answerPlane.position.x=20
                         mesh.position.x = 0; //(2, 2, 1)
                     mesh.position.y = 20; //(2, 3, 1)
                     mesh.position.z = 0;
-                    nextQuestion()
-                        
+                    if(selection!=null){
+
+                        nextQuestion()
+                        }
 
                     }
                    mesh.rotationQuaternion.x=0
@@ -510,23 +539,40 @@ function nextQuestion(){
         console.log(i)
 
     if(selection!=null||i==0){
+        var textures=[...answerTextures];
         console.log('drawing')
-         dynamicTexture.drawText(questions[i].question, null, null, questionFont, "#000000", "#ffffff", true);
-         i = answerTextures.length,
+        if(selection==correctSelection&&selection!=null){
+            console.log('correct')
+            answersCorrect++
+        }
+        if(selection!=correctSelection&&selection!=null){
+            console.log('wrong')
+        }
+         dynamicTexture.drawText(questions[questionNumber].question, null, null, questionFont, "#000000", "#ffffff", true);
+         i = textures.length,
         j = 0;
+        var numbers=[]
         var ranTextures = []
         while (i--) {
             j = Math.floor(Math.random() * (i+1));
-            ranTextures.push(answerTextures[j]);
-            answerTextures.splice(j,1);
+            numbers.push(j)
+            ranTextures.push(textures[j]);
+            textures.splice(j,1);
             }
          selection=null;
         i++
+        correctSelection=numbers[0]+1
+                console.log('correctSelection')
+                                console.log(correctSelection)
+
+
+        console.log(numbers)
+         ranTextures[0].drawText(questions[questionNumber].correctAnswer, null, null, font, "#000000", "#ffffff", true);
+         
+        ranTextures[1].drawText(questions[questionNumber].answer1, null, null, font, "#000000", "#ffffff", true);
+         ranTextures[2].drawText(questions[questionNumber].answer2, null, null, font, "#000000", "#ffffff", true);
+         ranTextures[3].drawText(questions[questionNumber].answer3, null, null, font, "#000000", "#ffffff", true);
+        questionNumber++
          }
-         ranTextures[0].drawText(questions[i].question, null, null, font, "#000000", "#ffffff", true);
-        ranTextures[1].drawText(questions[i].answer1, null, null, font, "#000000", "#ffffff", true);
-         ranTextures[2].drawText(questions[i].answer2, null, null, font, "#000000", "#ffffff", true);
-         ranTextures[3].drawText(questions[i].answer3, null, null, font, "#000000", "#ffffff", true);
-        answerTextures=ranTextures
 
 }
