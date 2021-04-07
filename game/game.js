@@ -398,6 +398,7 @@ answerPlane.position.x=20
         collider.actionManager.registerAction(action);
     });
 
+<<<<<<< Updated upstream
     function checkQuestion(){
         selections.push(selection)
 
@@ -423,6 +424,8 @@ answerPlane.position.x=20
 
 
 
+=======
+>>>>>>> Stashed changes
                 var animating=false
                 var keydown=false
                 var inputMap = {};
