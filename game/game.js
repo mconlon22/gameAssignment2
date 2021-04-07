@@ -113,7 +113,6 @@ const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engi
     var questionFont = font_size + "px " + font_type;
 	
 	//Draw text
-    dynamicTexture.drawText(text, null, null, questionFont, "#000000", "#ffffff", true);
  var myMaterial = new BABYLON.StandardMaterial("mat", scene);
     myMaterial.diffuseTexture = dynamicTexture;
     
@@ -133,7 +132,6 @@ var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWid
 
 var DTWidth = planeWidth * 60;
 var DTHeight = planeHeight * 60;
-text = "What is the name of the kindefsd sdafsadfa";
 var answerTexture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene,true);
 	answerTexture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
 
@@ -144,10 +142,8 @@ var textWidth = questionCtx.measureText(text).width;
 var ratio = textWidth/size;
 var font_size = Math.floor(DTWidth / (ratio * 1)); 
 var font = font_size + "px " + font_type;
-var clearColor = "transparent";
 var answerMaterial = new BABYLON.StandardMaterial("answerMat", scene);
 answerMaterial.useAlphaFromDiffuseTexture = true;
-answerTexture.drawText(text, null, null, font, "white", null ,true);
 answerMaterial.diffuseTexture = answerTexture;
 answerPlane.material = answerMaterial;
 answerPlane.material.diffuseTexture.hasAlpha = true;
@@ -155,7 +151,7 @@ answerPlane.material.diffuseTexture.hasAlpha = true;
 	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
 	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
     	var context2D = answerTexture.getContext();
-        		context2D.clearRect(0, 200, 512, 512);
+    context2D.clearRect(0, 200, 512, 512);
 
 
 	answerPlane.material.backFaceCulling = false;
@@ -177,10 +173,18 @@ var font = font_size + "px " + font_type;
 var clearColor = "transparent";
 var answer2Material = new BABYLON.StandardMaterial("answerMat", scene);
 answer2Material.useAlphaFromDiffuseTexture = true;
-answer2Texture.drawText(text, null, null, font, "#000000", "#ffffff" ,true);
+answer2Material.diffuseTexture = answerTexture;
+answerPlane.material = answer2Material;
+answerPlane.material.diffuseTexture.hasAlpha = true;
+    answerPlane.useAlphaFromDiffuseTexture = true;
+	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    answerPlane.material.backFaceCulling = false;
+
+    var context2D = answer2Texture.getContext();
+    context2D.clearRect(0, 200, 512, 512);
 answer2Material.diffuseTexture = answer2Texture;
 answerPlane.material = answer2Material;
-answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
 answerPlane.position.y=20
 answerPlane.position.z=20
 answerPlane.position.x=-10
@@ -199,11 +203,15 @@ var font_size = Math.floor(DTWidth / (ratio * 1));
 var font = font_size + "px " + font_type;
 var clearColor = "transparent";
 var answer3Material = new BABYLON.StandardMaterial("answerMat", scene);
-answer3Material.useAlphaFromDiffuseTexture = true;
-answer3Texture.drawText(text, null, null, font, "#000000", "#ffffff" ,true);
 answer3Material.diffuseTexture = answer3Texture;
-answerPlane.material = answer3Material;
-answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+answerPlane.material = answerMaterial;
+answerPlane.material.diffuseTexture.hasAlpha = true;
+    answerPlane.useAlphaFromDiffuseTexture = true;
+	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    ctx.clearRect(0, 200, 512, 512);
+answer3Material.useAlphaFromDiffuseTexture = true;
+answer3Material.diffuseTexture = answer3Texture;
 answerPlane.position.y=20
 answerPlane.position.z=20
 answerPlane.position.x=5
@@ -223,7 +231,6 @@ var font = font_size + "px " + font_type;
 var clearColor = "transparent";
 var answer4Material = new BABYLON.StandardMaterial("answerMat", scene);
 answer4Material.useAlphaFromDiffuseTexture = true;
-answer4Texture.drawText(text, null, null, font, "#000000", "#ffffff" ,true);
 answer4Material.diffuseTexture = answer4Texture;
 answerPlane.material = answer4Material;
 answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -257,7 +264,7 @@ answerPlane.position.x=20
         newMeshes[0].position.y=0
         newMeshes[0].name='astronaut'
         //Scale the model down        
-        astronaut.scaling.scaleInPlace(1);
+        astronaut.scaling.scaleInPlace(4);
         //Lock camera on the character 
         camera.target = astronaut;
         //Get the Samba animation Group
@@ -296,7 +303,7 @@ answerPlane.position.x=20
         //Play the Samba animation  
     });
 
-        let collider = BABYLON.MeshBuilder.CreateBox("collider", {size: 6}, scene);
+        let collider = BABYLON.MeshBuilder.CreateBox("collider", {size: 3}, scene);
         collider.visability=0
         collider.actionManager = new BABYLON.ActionManager(scene);
  var materialSphere = new BABYLON.StandardMaterial("texture2", scene);
@@ -398,14 +405,6 @@ answerPlane.position.x=20
         collider.actionManager.registerAction(action);
     });
 
-<<<<<<< Updated upstream
-    function checkQuestion(){
-        selections.push(selection)
-
-
-
-
-    }
 
 
 
@@ -424,8 +423,7 @@ answerPlane.position.x=20
 
 
 
-=======
->>>>>>> Stashed changes
+
                 var animating=false
                 var keydown=false
                 var inputMap = {};
@@ -466,19 +464,19 @@ answerPlane.position.x=20
                     }
                 
                 if (inputMap["w"]) {
-                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(.1));
+                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(.2));
                     keydown = true;
                 }
                 if (inputMap["s"]) {
-                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(-.1));
+                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(-.2));
                     keydown = true;
                 }
                 if (inputMap["a"]) {
-                    astronaut.rotate(BABYLON.Vector3.Up(), -.1);
+                    astronaut.rotate(BABYLON.Vector3.Up(), -.2);
                     keydown = true;
                 }
                 if (inputMap["d"]) {
-                    astronaut.rotate(BABYLON.Vector3.Up(), .1);
+                    astronaut.rotate(BABYLON.Vector3.Up(), .2);
                     keydown = true;
                 }
                 if (inputMap["b"]) {
@@ -551,7 +549,7 @@ function nextQuestion(){
         if(selection!=correctSelection&&selection!=null){
             console.log('wrong')
         }
-         dynamicTexture.drawText(questions[questionNumber].question, null, null, questionFont, "#000000", "#ffffff", true);
+         dynamicTexture.drawText(questions[questionNumber].question, null, null, questionFont,  "white", null, true);
          i = textures.length,
         j = 0;
         var numbers=[]
@@ -570,12 +568,63 @@ function nextQuestion(){
 
 
         console.log(numbers)
-         ranTextures[0].drawText(questions[questionNumber].correctAnswer, null, null, font, "#000000", "#ffffff", true);
+        
+        const title = document.getElementById('title')
+        while (title.firstChild) {
+            title.removeChild(title.lastChild);
+          }
+        var atitle = document.createElement("h2");
+        atitle.innerHTML='Question:    '
+        var titlequestion = document.createElement("h3");
+        titlequestion.innerHTML=questions[questionNumber].question
+        title.appendChild(atitle)
+        title.appendChild(titlequestion)
+
+        // and give it some content
+        const content = document.getElementById('content')
+        while (content.firstChild) {
+            content.removeChild(content.lastChild);
+          }
+
+          const answer1 = document.createElement("div");
+          var qtitle = document.createElement("h2");
+          qtitle.innerHTML='Arch 1:    '
+          answer1.innerHTML=questions[questionNumber].correctAnswer
+          content.appendChild(qtitle)
+          content.appendChild(answer1)
+          const answer2 = document.createElement("div");
+           qtitle = document.createElement("h2");
+          qtitle.innerHTML='Arch 2:    '
+          answer2.innerHTML=questions[questionNumber].answer1
+          content.appendChild(qtitle)
+          content.appendChild(answer2)  
+          const answer3 = document.createElement("div");
+           qtitle = document.createElement("h2");
+          qtitle.innerHTML='Arch 3:    '
+          answer3.innerHTML=questions[questionNumber].answer2
+          content.appendChild(qtitle)
+          content.appendChild(answer3)  
+          const answer4 = document.createElement("div");
+           qtitle = document.createElement("h2");
+          qtitle.innerHTML='Arch 4:    '
+          answer4.innerHTML=questions[questionNumber].answer3
+          content.appendChild(qtitle)
+          content.appendChild(answer4)
+          var clickEvent= new MouseEvent('click',{"view": window,"bubbles":true,'cancelable':false}
+
+          )
+          document.getElementById('button').dispatchEvent(clickEvent)
+          
+
+       
+        // add the text node to the newly created div
+         ranTextures[0].drawText(questions[questionNumber].correctAnswer, null, null, font,  "white", null, true);
          
-        ranTextures[1].drawText(questions[questionNumber].answer1, null, null, font, "#000000", "#ffffff", true);
-         ranTextures[2].drawText(questions[questionNumber].answer2, null, null, font, "#000000", "#ffffff", true);
-         ranTextures[3].drawText(questions[questionNumber].answer3, null, null, font, "#000000", "#ffffff", true);
+        ranTextures[1].drawText(questions[questionNumber].answer1, null, null, font,  "white", null, true);
+         ranTextures[2].drawText(questions[questionNumber].answer2, null, null, font,  "white", null, true);
+         ranTextures[3].drawText(questions[questionNumber].answer3, null, null, font,  "white", null, true);
         questionNumber++
          }
 
 }
+

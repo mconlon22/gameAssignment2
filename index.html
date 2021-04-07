@@ -35,16 +35,23 @@
         <div class="drawer__overlay" data-drawer-close tabindex="-1"></div>
         <div class="drawer__wrapper">
           <div class="drawer__header">
-            <div class="drawer__title">
-              Drawer Title Here
+            <div id='title' class="drawer__title">
             </div>
-            <button class="drawer__close" data-drawer-close aria-label="Close Drawer"></button>
+            <button id='button' class="drawer__close" data-drawer-close aria-label="Close Drawer"></button>
           </div>
-          <div class="drawer__content">
-            Drawer Content Here
+          <div id='content' class="drawer__content">
           </div>
         </div>
+
       </section>
+      <div id='incorrect' class="alertwrong">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        Correct
+      </div>
+      <div class="alertright">
+        <span id='correct' class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        Correct
+      </div>
     <script src='./game/game.js'>    </script>
 
 

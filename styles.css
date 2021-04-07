@@ -87,3 +87,38 @@
   height:100px
       
   }
+  .alertwrong {
+    bottom: 0;
+    padding: 20px;
+    left:2em;
+    position: fixed;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+  }
+  .alertright {
+    top: 2em;
+    padding: 20px;
+    left:20em;
+    position: fixed;
+    background-color: #09e614; /* Red */
+    color: white;
+    margin-bottom: 15px;
+  }
+  
+  /* The close button */
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  /* When moving the mouse over the close button */
+  .closebtn:hover {
+    color: black;
+  }
