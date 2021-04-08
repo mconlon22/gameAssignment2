@@ -1,4 +1,7 @@
 //<reference path="libs/babylon.d.ts" />
+
+
+
 const createScene =  () => {
     const scene = new BABYLON.Scene(engine);
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 0, 0));
@@ -88,6 +91,7 @@ const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engi
 
     //Create plane
     var plane = BABYLON.MeshBuilder.CreatePlane("plane", {width:planeWidth, height:planeHeight}, scene);
+   
 
     //Set width and height for dynamic texture using same multiplier
     var DTWidth = planeWidth * 60;
@@ -125,118 +129,106 @@ const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engi
 
 //answer pane 1
 
- var font_type = "Arial";
-var planeWidth = 12;
-var planeHeight = 10;
+font_type = "Arial";
+    planeWidth = 12;
+    planeHeight = 10;
+
+DTWidth = planeWidth * 60;
+DTHeight = planeHeight * 60;
+size = 140; 
+
+
+
 var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
-
-var DTWidth = planeWidth * 60;
-var DTHeight = planeHeight * 60;
 var answerTexture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene,true);
-	answerTexture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
-
-var questionCtx = answerTexture.getContext();
-var size = 70; 
-questionCtx.font = size + "px " + font_type;
-var textWidth = questionCtx.measureText(text).width;
-var ratio = textWidth/size;
-var font_size = Math.floor(DTWidth / (ratio * 1)); 
-var font = font_size + "px " + font_type;
+answerTexture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+answerTexture.drawText('1', null, null, size + "px " + font_type,  "white", null, true);
 var answerMaterial = new BABYLON.StandardMaterial("answerMat", scene);
 answerMaterial.useAlphaFromDiffuseTexture = true;
 answerMaterial.diffuseTexture = answerTexture;
 answerPlane.material = answerMaterial;
 answerPlane.material.diffuseTexture.hasAlpha = true;
-    answerPlane.useAlphaFromDiffuseTexture = true;
-	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    	var context2D = answerTexture.getContext();
-    context2D.clearRect(0, 200, 512, 512);
+answerPlane.useAlphaFromDiffuseTexture = true;
+answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+var context2D = answerTexture.getContext();
+context2D.clearRect(0, 200, 512, 512);
+answerPlane.material.backFaceCulling = false;
 
 
-	answerPlane.material.backFaceCulling = false;
 answerPlane.position.y=20
-answerPlane.position.z=20
+answerPlane.position.z=30
 answerPlane.position.x=-25
 
 
 //answerpane2
-var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
-var answer2Texture = new BABYLON.DynamicTexture("answer2Texture", {width:DTWidth, height:DTHeight}, scene);
-var ctx = answer2Texture.getContext();
-var size = 70; 
-ctx.font = size + "px " + font_type;
-var textWidth = ctx.measureText(text).width;
-var ratio = textWidth/size;
-var font_size = Math.floor(DTWidth / (ratio * 1)); 
-var font = font_size + "px " + font_type;
-var clearColor = "transparent";
-var answer2Material = new BABYLON.StandardMaterial("answerMat", scene);
-answer2Material.useAlphaFromDiffuseTexture = true;
-answer2Material.diffuseTexture = answerTexture;
-answerPlane.material = answer2Material;
-answerPlane.material.diffuseTexture.hasAlpha = true;
-    answerPlane.useAlphaFromDiffuseTexture = true;
-	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    answerPlane.material.backFaceCulling = false;
+var answerPlane2 = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
+var answer2Texture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene,true);
+answer2Texture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+answer2Texture.drawText('2', null, null, size + "px " + font_type,  "white", null, true);
+var answerMaterial = new BABYLON.StandardMaterial("answerMat", scene);
+answerMaterial.useAlphaFromDiffuseTexture = true;
+answerMaterial.diffuseTexture = answer2Texture;
+answerPlane2.material = answerMaterial;
+answerPlane2.material.diffuseTexture.hasAlpha = true;
+answerPlane2.useAlphaFromDiffuseTexture = true;
+answerPlane2.material.specularColor = new BABYLON.Color3(0, 0, 0);
+answerPlane2.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+var context2D = answer2Texture.getContext();
+context2D.clearRect(0, 200, 512, 512);
+answerPlane2.material.backFaceCulling = false;
 
-    var context2D = answer2Texture.getContext();
-    context2D.clearRect(0, 200, 512, 512);
-answer2Material.diffuseTexture = answer2Texture;
-answerPlane.material = answer2Material;
-answerPlane.position.y=20
-answerPlane.position.z=20
-answerPlane.position.x=-10
+answerPlane2.position.y=20
+answerPlane2.position.z=30
+answerPlane2.position.x=-10
 
 
 
 //answerpane3
-var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
-var answer3Texture = new BABYLON.DynamicTexture("answer3Texture", {width:DTWidth, height:DTHeight}, scene);
-var ctx = answer3Texture.getContext();
-var size = 70; 
-ctx.font = size + "px " + font_type;
-var textWidth = ctx.measureText(text).width;
-var ratio = textWidth/size;
-var font_size = Math.floor(DTWidth / (ratio * 1)); 
-var font = font_size + "px " + font_type;
-var clearColor = "transparent";
+var answerPlane3 = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
+var answer3Texture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene,true);
+answer3Texture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+answer3Texture.drawText('3', null, null, size + "px " + font_type,  "white", null, true);
 var answer3Material = new BABYLON.StandardMaterial("answerMat", scene);
-answer3Material.diffuseTexture = answer3Texture;
-answerPlane.material = answerMaterial;
-answerPlane.material.diffuseTexture.hasAlpha = true;
-    answerPlane.useAlphaFromDiffuseTexture = true;
-	answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-	answerPlane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    ctx.clearRect(0, 200, 512, 512);
 answer3Material.useAlphaFromDiffuseTexture = true;
 answer3Material.diffuseTexture = answer3Texture;
-answerPlane.position.y=20
-answerPlane.position.z=20
-answerPlane.position.x=5
+answerPlane3.material = answer3Material;
+answerPlane3.material.diffuseTexture.hasAlpha = true;
+answerPlane3.useAlphaFromDiffuseTexture = true;
+answerPlane3.material.specularColor = new BABYLON.Color3(0, 0, 0);
+answerPlane3.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+var context2D = answer3Texture.getContext();
+context2D.clearRect(0, 200, 512, 512);
+answerPlane3.material.backFaceCulling = false;
+
+answer3Material.useAlphaFromDiffuseTexture = true;
+answer3Material.diffuseTexture = answer3Texture;
+answerPlane3.position.y=20
+answerPlane3.position.z=30
+answerPlane3.position.x=5
 
 
 
 //answerpane4
-var answerPlane = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
-var answer4Texture = new BABYLON.DynamicTexture("answer4Texture", {width:DTWidth, height:DTHeight}, scene);
-var ctx = answer4Texture.getContext();
-var size = 70; 
-ctx.font = size + "px " + font_type;
-var textWidth = ctx.measureText(text).width;
-var ratio = textWidth/size;
-var font_size = Math.floor(DTWidth / (ratio * 1)); 
-var font = font_size + "px " + font_type;
-var clearColor = "transparent";
-var answer4Material = new BABYLON.StandardMaterial("answerMat", scene);
-answer4Material.useAlphaFromDiffuseTexture = true;
-answer4Material.diffuseTexture = answer4Texture;
-answerPlane.material = answer4Material;
-answerPlane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-answerPlane.position.y=20
-answerPlane.position.z=20
-answerPlane.position.x=20
+var answerPlane4 = BABYLON.MeshBuilder.CreatePlane("answerplane", {width:planeWidth, height:planeHeight}, scene);
+var answer4Texture = new BABYLON.DynamicTexture("answerTexture", {width:DTWidth, height:DTHeight}, scene,true);
+answer4Texture.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+answer4Texture.drawText('4', null, null, size + "px " + font_type,  "white", null, true);
+var answer3Material = new BABYLON.StandardMaterial("answerMat", scene);
+answer3Material.useAlphaFromDiffuseTexture = true;
+answer3Material.diffuseTexture = answer4Texture;
+answerPlane4.material = answer3Material;
+answerPlane4.material.diffuseTexture.hasAlpha = true;
+answerPlane4.useAlphaFromDiffuseTexture = true;
+answerPlane4.material.specularColor = new BABYLON.Color3(0, 0, 0);
+answerPlane4.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+var context2D = answer4Texture.getContext();
+context2D.clearRect(0, 200, 512, 512);
+answerPlane4.material.backFaceCulling = false;
+
+answerPlane4.position.y=20
+answerPlane4.position.z=30
+answerPlane4.position.x=20
         answerTextures=[answerTexture,answer2Texture,answer3Texture,answer4Texture]
 
 
@@ -252,11 +244,21 @@ answerPlane.position.x=20
     var astronaut=null
     var runningAnim = null
         var idleAnim = null
+        var faceColors = new Array(6);
+  faceColors[4] = new BABYLON.Color4(0,1,0,1);   // red top
+
+        var goptions = {
+   width: 70, 
+   height: 1,
+    depth: 70,
+    faceColors : faceColors
+  };
     var image = BABYLON.MeshBuilder.Create
-   var ground = BABYLON.MeshBuilder.CreateBox("ground", {width: 70, height: 1, depth: 70}, scene);
+   var ground = BABYLON.MeshBuilder.CreateBox("ground", goptions, scene);
 
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1 , restitution: 0 }, scene);
             ground.checkCollisions = false;
+             var grassMaterial = new BABYLON.StandardMaterial(name + "bawl", scene);
 
 
     BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut6.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
@@ -445,7 +447,7 @@ answerPlane.position.x=20
 
                 keydown=false
                 animating=false
-                const mesh= scene.getMeshByName('astronaut')
+                mesh= scene.getMeshByName('astronaut')
                 if(scene.getMeshByName('astronaut')!=null){
                     if(scene.getMeshByName('astronaut').position.y<-20)
                     { 
@@ -495,12 +497,8 @@ answerPlane.position.x=20
                             //Samba!
                             runningAnim.start(true, 1.0, runningAnim.from, runningAnim.to, false);
                         }
-                        else {
-                            //Walk
-                            scene.stopAllAnimations()
-                            idleAnim.start(true, 1.0, idleAnim.from, idleAnim.to, false);
-                        }
                     }
+                      
                 }
                  else {
                             scene.stopAllAnimations()
@@ -537,37 +535,25 @@ function animsLoaded(){
 }
 var choseOption=false
 function nextQuestion(){
-        console.log(i)
 
-    if(selection!=null||i==0){
+    if(selection!=null||questionNumber==0){
         var textures=[...answerTextures];
         console.log('drawing')
         if(selection==correctSelection&&selection!=null){
             console.log('correct')
+            document.getElementById('correct').style.display = "block";
+            setTimeout(function () {document.getElementById('correct').style.display = "none";}, 2000)
+
             answersCorrect++
         }
         if(selection!=correctSelection&&selection!=null){
             console.log('wrong')
+              document.getElementById('incorrect').style.display = "block";
+            setTimeout(function () {document.getElementById('incorrect').style.display = "none";}, 2000)
         }
          dynamicTexture.drawText(questions[questionNumber].question, null, null, questionFont,  "white", null, true);
          i = textures.length,
         j = 0;
-        var numbers=[]
-        var ranTextures = []
-        while (i--) {
-            j = Math.floor(Math.random() * (i+1));
-            numbers.push(j)
-            ranTextures.push(textures[j]);
-            textures.splice(j,1);
-            }
-         selection=null;
-        i++
-        correctSelection=numbers[0]+1
-                console.log('correctSelection')
-                                console.log(correctSelection)
-
-
-        console.log(numbers)
         
         const title = document.getElementById('title')
         while (title.firstChild) {
@@ -576,55 +562,89 @@ function nextQuestion(){
         var atitle = document.createElement("h2");
         atitle.innerHTML='Question:    '
         var titlequestion = document.createElement("h3");
+        document.getElementById('question').innerHTML='Question: '+questions[questionNumber].question
         titlequestion.innerHTML=questions[questionNumber].question
+
         title.appendChild(atitle)
         title.appendChild(titlequestion)
 
         // and give it some content
         const content = document.getElementById('content')
+        var answers=[questions[questionNumber].correctAnswer,questions[questionNumber].answer1,questions[questionNumber].answer2,questions[questionNumber].answer3]
+        answers=shuffle(answers)
         while (content.firstChild) {
             content.removeChild(content.lastChild);
           }
+          document.getElementById('qcard').style.display = "block";
+          myVar = setTimeout(function () {document.getElementById('qcard').style.display = "none";}, 5000)
 
           const answer1 = document.createElement("div");
           var qtitle = document.createElement("h2");
           qtitle.innerHTML='Arch 1:    '
-          answer1.innerHTML=questions[questionNumber].correctAnswer
+          document.getElementById('answer1').innerHTML='1. '+answers[0]
+          answer1.innerHTML=answers[0]
           content.appendChild(qtitle)
           content.appendChild(answer1)
+
           const answer2 = document.createElement("div");
            qtitle = document.createElement("h2");
           qtitle.innerHTML='Arch 2:    '
-          answer2.innerHTML=questions[questionNumber].answer1
+            document.getElementById('answer2').innerHTML='2. '+answers[1]
+
+          answer2.innerHTML=answers[1]
+
           content.appendChild(qtitle)
           content.appendChild(answer2)  
           const answer3 = document.createElement("div");
            qtitle = document.createElement("h2");
           qtitle.innerHTML='Arch 3:    '
-          answer3.innerHTML=questions[questionNumber].answer2
+          answer3.innerHTML=answers[2]
+                      document.getElementById('answer3').innerHTML='3. '+answers[2]
+
           content.appendChild(qtitle)
           content.appendChild(answer3)  
           const answer4 = document.createElement("div");
            qtitle = document.createElement("h2");
           qtitle.innerHTML='Arch 4:    '
-          answer4.innerHTML=questions[questionNumber].answer3
+             document.getElementById('answer4').innerHTML='4. '+answers[3]
+
+          answer4.innerHTML=answers[3]
           content.appendChild(qtitle)
           content.appendChild(answer4)
-          var clickEvent= new MouseEvent('click',{"view": window,"bubbles":true,'cancelable':false}
-
-          )
-          document.getElementById('button').dispatchEvent(clickEvent)
+         
           
 
        
+            for(var i=0; i<answers.length; i++){
+                if(!answers[i].localeCompare(questions[questionNumber].correctAnswer)){
+                    correctSelection=i+1
+                                        console.log('correctSelection')
+
+                    console.log(correctSelection)
+                }
+            }
         // add the text node to the newly created div
-         ranTextures[0].drawText(questions[questionNumber].correctAnswer, null, null, font,  "white", null, true);
-         
-        ranTextures[1].drawText(questions[questionNumber].answer1, null, null, font,  "white", null, true);
-         ranTextures[2].drawText(questions[questionNumber].answer2, null, null, font,  "white", null, true);
-         ranTextures[3].drawText(questions[questionNumber].answer3, null, null, font,  "white", null, true);
+       
         questionNumber++
          }
+         function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 
 }
 

@@ -122,3 +122,89 @@
   .closebtn:hover {
     color: black;
   }
+  .card{
+    position: fixed;
+    bottom: 40em;
+    left: 40%;
+  }
+  #checkmark {
+    display:block;
+    position: fixed;
+    width: 66px;
+    height:66px;
+    top: 10em;
+    left: 50%;
+    background: #c9ff00;
+    border-radius:50%;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+#checkmark:before{
+    content:"";
+    position: fixed;
+    width:9px;
+    height:27px;
+    background-color:#fff;
+    left:33px;
+    top:18px;
+}
+
+
+#checkmark:after{
+    content:"";
+    position: fixed;
+    width:9px;
+    height:9px;
+    background-color:#fff;
+    left:24px;
+    top:36px;
+}
+#checkmark1 {
+  display:block;
+  position: fixed;
+  width: 66px;
+  height:66px;
+  top: 10em;
+  left: 50%;
+  background: #ff0000;
+  border-radius:50%;
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+}
+
+#checkmark1:before{
+  content:"";
+  position: fixed;
+  width:9px;
+  height:27px;
+  background-color:#fff;
+  left:29px;
+  top:18px;
+}
+
+
+#checkmark1:after{
+  content:"";
+  position: fixed;
+  width:27px;
+  height:9px;
+  background-color:#fff;
+  left:20px;
+  top:28px;
+}
+.correctText{
+  position: fixed;
+  bottom: 16.5em;
+  left: 47%;
+  text-align: center;
+
+}
+#correct{
+  display:none
+}
+#incorrect{
+  display:none
+}
