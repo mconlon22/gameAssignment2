@@ -23,30 +23,9 @@ var questionNumber=0
 var i=0
 
 function getQuestions(){
-    questions=[  {
-        "answer1": "1",
-        "answer2": "2",
-        "answer3": "3",
-        "correctAnswer": "right",
-        "question": "hello1"
-    },
-    {
-        "answer1": "1",
-        "answer2": "2",
-        "answer3": "3",
-        "correctAnswer": "right",
-        "question": "hello2"
-    },
-    {
-        "answer1": "1",
-        "answer2": "2",
-        "answer3": "3",
-        "correctAnswer": "right",
-        "question": "hello3"
-    }]
-    window.localStorage.setItem("questions",questions);
 
-    window.localStorage.getItem("questions")
+    questions=JSON.parse(window.localStorage.getItem("Questions"))
+    console.log(questions)
 }
 
 
@@ -241,6 +220,8 @@ answerPlane4.position.x=20
     scene.collisionsEnabled = true;
 
     camera.attachControl(canvas, true);
+    camera.lowerRadiusLimit = 40;
+camera.upperRadiusLimit = 50;
     var astronaut=null
     var runningAnim = null
         var idleAnim = null
@@ -536,20 +517,22 @@ function animsLoaded(){
 var choseOption=false
 function nextQuestion(){
 
-    if(selection!=null||questionNumber==0){
+    if((selection!=null||questionNumber==0)&&questionNumber<questions.length){
         var textures=[...answerTextures];
         console.log('drawing')
         if(selection==correctSelection&&selection!=null){
             console.log('correct')
             document.getElementById('correct').style.display = "block";
             setTimeout(function () {document.getElementById('correct').style.display = "none";}, 2000)
-
+            questions[questionNumber-1].correct=true
             answersCorrect++
         }
         if(selection!=correctSelection&&selection!=null){
             console.log('wrong')
               document.getElementById('incorrect').style.display = "block";
             setTimeout(function () {document.getElementById('incorrect').style.display = "none";}, 2000)
+            questions[questionNumber-1].correct=false
+
         }
          dynamicTexture.drawText(questions[questionNumber].question, null, null, questionFont,  "white", null, true);
          i = textures.length,
@@ -627,6 +610,24 @@ function nextQuestion(){
        
         questionNumber++
          }
+         else{
+            if(selection!=correctSelection&&selection!=null){
+                console.log('wrong')
+                  document.getElementById('incorrect').style.display = "block";
+                setTimeout(function () {document.getElementById('incorrect').style.display = "none";}, 2000)
+                questions[questionNumber-1].correct=false
+    
+            }
+            if(selection==correctSelection&&selection!=null){
+                console.log('correct')
+                document.getElementById('correct').style.display = "block";
+                setTimeout(function () {document.getElementById('correct').style.display = "none";}, 2000)
+                questions[questionNumber-1].correct=true
+                answersCorrect++
+            }
+            showScore()
+             console.log(questions)
+         }
          function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -644,6 +645,38 @@ function nextQuestion(){
   }
 
   return array;
+}
+function showScore(){
+    document.getElementById('answers').style.display="block"
+    document.getElementById('answerlisttitle').innerHTML="You Scored "+answersCorrect +"/"+questions.length
+    var list=document.getElementById('answerlist')
+    while (list.firstChild) {
+        list.removeChild(list.lastChild);
+      }
+    for(var i=0;i<questions.length;i++){
+        var listitem=document.createElement('ul')
+        listitem.className='list-group-item'
+        listitem.innerHTML='Question ' + (i+1) + ":   " +questions[i].question
+        var listitem1=document.createElement('ul')
+        listitem1.className='list-group-item'
+        listitem1.innerHTML='Answer :   ' +questions[i].correctAnswer
+        var listitem2=document.createElement('ul')
+        listitem2.className='list-group-item'
+        
+        if(questions[i].correct){
+            listitem2.innerHTML='Correct'
+            listitem2.className='greentext'
+        }
+       else{
+            listitem2.innerHTML='Incorrect'
+            listitem2.className='redtext'
+        }
+        list.appendChild(listitem)
+        list.appendChild(listitem1)
+        list.appendChild(listitem2)
+        
+    }
+
 }
 
 }

@@ -11,6 +11,8 @@ function App() {
     <div className="App">
       <Router>
      {routeComponents}
+     <Route exact path="/playQuiz" render={() => {window.location.href="game.html"}} />
+
      </Router>
     </div>
   );

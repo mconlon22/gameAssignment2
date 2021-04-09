@@ -29,14 +29,16 @@ class ChooseQuiz extends React.Component {
     }
     chooseQuiz=(QuizId)=>{
         console.log(QuizId)
-        this.props.history.push("/ChooseQuiz");
         axios.get('http://0.0.0.0:85/getQuizQuestions', {
             params: {
               id:QuizId
             }
           }).then((res)=>{
-              console.log(res.data)
-              window.localStorage.setItem('Questions',res.data)
+              console.log(JSON.stringify(res.data))
+              window.localStorage.setItem('Questions',JSON.stringify(res.data))
+              this.props.history.push("/playQuiz");
+
+
           });
 
 
