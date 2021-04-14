@@ -515,6 +515,9 @@ function animsLoaded(){
     }
 }
 var choseOption=false
+
+
+
 function nextQuestion(){
 
     if((selection!=null||questionNumber==0)&&questionNumber<questions.length){
@@ -681,3 +684,5 @@ function showScore(){
 
 }
 
+const io = require("socket.io-client");
+const socket = io("https://server-domain.com");
