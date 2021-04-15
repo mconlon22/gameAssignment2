@@ -1,32 +1,22 @@
-var app = require("express")();
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
+var express = require("express");
+var app = express();
 
-const port = 8080;
-
-io.on("connection", function(socket) {
-  console.log("a user connected");
-
-  socket.on("join_room", room => {
-    socket.join(room);
-  });
-
-  socket.on("message", ({ room, message }) => {
-    socket.to(room).emit("message", {
-      message,
-      name: "Friend"
-    });
-  });
-
-  socket.on("typing", ({ room }) => {
-    socket.to(room).emit("typing", "Someone is typing");
-  });
-
-  socket.on("stopped_tying", ({ room }) => {
-    socket.to(room).emit("stopped_tying");
-  });
+var http = require("http").createServer(app);
+var io = require("socket.io")(http, {
+    cors: {
+        origin: "http://127.0.0.1:5500",
+        methods: ["GET", "POST"]
+    }
 });
 
-http.listen(port, function() {
-  console.log(`listening on *:${port}`);
+http.listen(3000, function(){
+console.log("Successfully Connected Node Server");
+
+ io.on("connection", function(socket){
+    console.log("Auth value: " + socket.id);
+
+    socket.on("sendNotification", function(details){
+        socket.broadcast.emit("sendNotification", details);
+    });
+});
 });

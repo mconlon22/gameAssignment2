@@ -18,7 +18,7 @@ class ChooseQuiz extends React.Component {
         console.log('subject')
 
         console.log(subject)
-        axios.get('http://0.0.0.0:85/getQuizs', {
+        axios.get('http://localhost:85/getQuizs', {
             params: {
               subject:subject
             }
@@ -29,7 +29,7 @@ class ChooseQuiz extends React.Component {
     }
     chooseQuiz=(QuizId)=>{
         console.log(QuizId)
-        axios.get('http://0.0.0.0:85/getQuizQuestions', {
+        axios.get('http://localhost:85/getQuizQuestions', {
             params: {
               id:QuizId
             }

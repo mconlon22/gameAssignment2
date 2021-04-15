@@ -39,6 +39,10 @@ function getQuestions(){
 
 
 
+const socket = io("ws://localhost:8080");
+socket.on('message', function (text){
+    console.log(text)
+})
 
 
 
@@ -684,5 +688,4 @@ function showScore(){
 
 }
 
-const io = require("socket.io-client");
-const socket = io("https://server-domain.com");
+
