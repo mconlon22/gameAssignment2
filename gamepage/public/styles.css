@@ -203,6 +203,21 @@ left: 47%;
 text-align: center;
 
 }
+#multigui{
+  display: none
+}
+#join_game{
+  display: none
+}
+#scoreboardcard{
+  display: none
+}
+#create1{
+  display: none
+}
+#join{
+  display: none
+}
 #correct{
 display:none
 }
@@ -210,6 +225,9 @@ display:none
 display:none
 }
 #answers{
+  display: none;
+}
+#qcard{
   display: none;
 }
 .greentext{

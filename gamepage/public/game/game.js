@@ -33,16 +33,167 @@ function getQuestions(){
 
 
 
+function makeid(length) {
+    var result           = [];
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result.push(characters.charAt(Math.floor(Math.random() * 
+ charactersLength)));
+   }
+   return result.join('');
+}
 
 
 
+//socket logic
+let players = {}
+let leaderboard = {}
 
-
-
-const socket = io("ws://localhost:8080");
-socket.on('message', function (text){
-    console.log(text)
+const socket = io("ws://178.62.61.92:8080");
+var room=''
+var playerid='martin'
+socket.on("connection", (socket) =>{
+    console.log("connection")
 })
+socket.on("player_joined", ({playerid}) =>{
+    console.log("playerid")
+    console.log(playerid)
+    players[playerid]=new Player(playerid)
+
+    addPlayer(playerid)
+    
+})
+socket.on("players", (playersobj) =>{
+    console.log("players")
+    console.log(playersobj)
+    var list =document.getElementById('playerlist')
+    playersobj.forEach(playername =>{
+        addPlayer(playername)
+        if(playername!=playerid){
+                        
+        players[playername]=new Player(playername)
+        }
+    })
+
+})
+
+socket.on("start_game", (nah) =>{
+
+    console.log("start_game")
+    document.getElementById('join_game').style.display ='none'
+    nextQuestion()
+    
+})
+socket.on("score", ({playerid,playerscore}) =>{
+    leaderboard[playerid] = playerscore
+    drawScoreboard()
+    console.log("player " + playerid + " scored " + playerscore)    
+})
+socket.on("player_moved", ({playerid:playername,x,y,z}) =>{
+    console.log('playermoved')
+
+    console.log(players)
+    console.log('playername')
+
+            console.log(playername)
+    players[playername].movePlayer(x,y,z)
+})
+function addPlayer(playerid){
+    leaderboard[playerid] =-1
+    var list =document.getElementById('playerlist')
+    var list1 =document.getElementById('playerlist1')
+
+    const playeritem=document.createElement('li')
+    const playeritem1=document.createElement('li')
+
+    playeritem.innerHTML=playerid
+        playeritem1.innerHTML=playerid
+    list.appendChild(playeritem)
+    list1.appendChild(playeritem1)
+   
+
+    
+
+}
+
+
+
+
+
+ ///handing the socket  gui
+                document.getElementById('single').addEventListener('click', function (evt) {
+                    document.getElementById('gui').style.display = "none"
+                    nextQuestion()
+                })
+                 document.getElementById('multi').addEventListener('click', function (evt) {
+                    document.getElementById('gui').style.display = "none"
+                    document.getElementById('multigui').style.display = "block"
+
+                })
+                 document.getElementById('create').addEventListener('click', function (evt) {
+                    document.getElementById('multigui').style.display = "none"
+                    document.getElementById('create1').style.display = "block"
+                    playerid=document.getElementById('username').value
+
+                    room=makeid(4)
+                    document.getElementById('gamepin').innerHTML =room
+                    socket.emit('join_room',{room,playerid})
+
+                })
+                 document.getElementById('joinl').addEventListener('click', function (evt) {
+                    document.getElementById('multigui').style.display = "none"
+                    playerid=document.getElementById('username').value
+                    document.getElementById('join').style.display = "block"
+                })
+                document.getElementById('joinGame').addEventListener('click', function (evt) {
+                    document.getElementById('join').style.display = "none"
+                    room=document.getElementById('pin').value
+                    document.getElementById('join_game').style.display ='block'
+                    socket.emit('join_room',{room,playerid})
+
+                })
+                document.getElementById('startGame').addEventListener('click', function (evt) {
+                    console.log('start game')
+                    document.getElementById('create1').style.display ='none'
+                    socket.emit('start_game',{room})
+                    nextQuestion()
+
+                })
+                 document.getElementById('scoreboard').addEventListener('click', function (evt) {
+                    console.log('scoreboard')
+                    document.getElementById('scoreboardcard').style.display ='block'
+                    drawScoreboard()
+
+                })
+                function drawScoreboard() {
+                    document.getElementById('answers').style.display ='none'
+
+                                var list=document.getElementById('scorelist')
+
+                    console.log(leaderboard)
+                     while (list.firstChild) {
+                        list.removeChild(list.lastChild);
+                    }
+                    for (var key in leaderboard) {
+                        const value=leaderboard[key]
+                        console.log(key)
+                    var element=document.createElement('li',)
+
+                    if(value!=-1){
+                    element.innerHTML=key+'     '+value
+                    }
+                    else{
+                        console.log(key+'     Not Finished')
+                        element.innerHTML=key+'     Not Finished'
+                    }
+                    list.appendChild(element)
+                    }
+                }
+        
+
+
+
 
 
 
@@ -215,7 +366,6 @@ answerPlane4.position.x=20
         answerTextures=[answerTexture,answer2Texture,answer3Texture,answer4Texture]
 
 
-            nextQuestion()
 
 
 
@@ -244,16 +394,16 @@ camera.upperRadiusLimit = 50;
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1 , restitution: 0 }, scene);
             ground.checkCollisions = false;
              var grassMaterial = new BABYLON.StandardMaterial(name + "bawl", scene);
-
-
+class Player {
+  constructor(playerid) {
+    this.playerid= playerid
     BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut6.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
-        astronaut = newMeshes[0];
+        const player = newMeshes[0];
         newMeshes[0].position.y=0
-        newMeshes[0].name='astronaut'
+        newMeshes[0].name=playerid
         //Scale the model down        
-        astronaut.scaling.scaleInPlace(4);
+        player.scaling.scaleInPlace(4);
         //Lock camera on the character 
-        camera.target = astronaut;
         //Get the Samba animation Group
         runningAnim = scene.getAnimationGroupByName("running");
         idleAnim = scene.getAnimationGroupByName("idle");
@@ -262,33 +412,24 @@ camera.upperRadiusLimit = 50;
         var unit = newMeshes[0];
         unit.showBoundingBox = true;
 
-        var yBot = newMeshes[1]
-        // yBot.showBoundingBox = true;
 
-        unit.position.y = 2;
-        yBot.position.y = 0;
-
-        unit.parent = null;
-
-        unit.physicsImpostor = new BABYLON.PhysicsImpostor(unit, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0.1 ,height:2,width:1}, scene);
-        
-        // yBot.physicsImpostor = new BABYLON.PhysicsImpostor(yBot,
-        //             BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0.001 }, scene);
-
-        // yBot.setPivotMatrix(BABYLON.Matrix.Translation(0,0,0), true);
-        var mat = new BABYLON.StandardMaterial("astronaut", scene,true);
-        mat.diffuseTexture = new BABYLON.Texture("game/3dAssets/Image_0.png", scene);
-        astronaut.material = mat;
+            
+            })
+}
 
 
-        scene.onReadyObservable.add(function() {
-            setTimeout(function(){
-                unit.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, .5, 0), unit.getAbsolutePosition());
-            }, 4000)
-        });
- 
-        //Play the Samba animation  
-    });
+
+     movePlayer(x,y,z){
+            var mesh = scene.getMeshByName(this.playerid)
+            mesh.rotationQuaternion.x=0
+            mesh.rotationQuaternion.z=0
+
+            mesh.position.x =x
+            mesh.position.y =y
+            mesh.position.z =z
+
+    }
+ };
 
         let collider = BABYLON.MeshBuilder.CreateBox("collider", {size: 3}, scene);
         collider.visability=0
@@ -349,6 +490,33 @@ camera.upperRadiusLimit = 50;
     );
         collider.actionManager.registerAction(action);
     });
+     BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut6.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
+        astronaut = newMeshes[0];
+        newMeshes[0].position.y=0
+        newMeshes[0].name='astronaut'
+        //Scale the model down        
+        astronaut.scaling.scaleInPlace(4);
+        //Lock camera on the character 
+        camera.target = astronaut;
+        //Get the Samba animation Group
+        runningAnim = scene.getAnimationGroupByName("running");
+        idleAnim = scene.getAnimationGroupByName("idle");
+        var skeleton = skeletons[0];
+
+        var unit = newMeshes[0];
+        unit.showBoundingBox = true;
+
+        var yBot = newMeshes[1]
+        // yBot.showBoundingBox = true;
+
+        unit.position.y = 2;
+        yBot.position.y = 0;
+
+        unit.parent = null;
+
+        unit.physicsImpostor = new BABYLON.PhysicsImpostor(unit, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0.1 ,height:2,width:1}, scene);
+     })
+
  BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "arch.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
         exit=newMeshes[0]
         exit.name='arch3'
@@ -395,6 +563,8 @@ camera.upperRadiusLimit = 50;
 
 
 
+
+
  
 
 
@@ -422,8 +592,18 @@ camera.upperRadiusLimit = 50;
                     inputMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
                 }));
 
-            //draw the image to the mesh
+               
 
+
+
+
+
+        
+        
+        
+        
+            //draw the image to the mesh
+        
 
 
 
@@ -433,6 +613,7 @@ camera.upperRadiusLimit = 50;
                 keydown=false
                 animating=false
                 mesh= scene.getMeshByName('astronaut')
+                
                 if(scene.getMeshByName('astronaut')!=null){
                     if(scene.getMeshByName('astronaut').position.y<-20)
                     { 
@@ -469,6 +650,10 @@ camera.upperRadiusLimit = 50;
                 if (inputMap["b"]) {
                     keydown = true;
                 }
+                if(keydown){
+
+                    socket.emit('moved',{room,playerid,x:astronaut.position.x,y:astronaut.position.y,z:astronaut.position.z})
+                }
                 if(animsLoaded())
               {  if (keydown) {
                     if (!animating) {
@@ -487,7 +672,7 @@ camera.upperRadiusLimit = 50;
                 }
                  else {
                             scene.stopAllAnimations()
-                            idleAnim.start(true, 1.0, idleAnim.from, idleAnim.to, false);
+                             idleAnim.start(true, 1.0, idleAnim.from, idleAnim.to, false);
                         }
                 }
                 scene.render();
@@ -608,7 +793,7 @@ function nextQuestion(){
             for(var i=0; i<answers.length; i++){
                 if(!answers[i].localeCompare(questions[questionNumber].correctAnswer)){
                     correctSelection=i+1
-                                        console.log('correctSelection')
+                    console.log('correctSelection')
 
                     console.log(correctSelection)
                 }
@@ -654,6 +839,9 @@ function nextQuestion(){
   return array;
 }
 function showScore(){
+    console.log(answersCorrect)
+    socket.emit('score',{room,playerid,playerscore:answersCorrect})
+    leaderboard[playerid] = answersCorrect
     document.getElementById('answers').style.display="block"
     document.getElementById('answerlisttitle').innerHTML="You Scored "+answersCorrect +"/"+questions.length
     var list=document.getElementById('answerlist')
