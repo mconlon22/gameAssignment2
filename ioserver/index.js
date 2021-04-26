@@ -1,7 +1,9 @@
-const http = require("http").createServer();
+var app = require("express")();
+var http = require("http").Server(app);
 const io=require("socket.io")(http,{
     cors:{origin: "*"}
 })
+const port = 6600;
 
 var rooms={}
 
@@ -30,6 +32,11 @@ io.on("connection",(socket) =>{
     socket.on('message',({room,message})=>{
      socket.to(room).emit(message)
    })
+   socket.on('knockout',({room,playerid,playerPunching})=>{
+     console.log(playerid)
+
+     socket.to(room).emit('knockout',{id:playerid,playerPunching:playerPunching})
+   })
     socket.on('start_game',({room})=>{
       console.log('start',room)
      socket.to(room).emit('start_game', 'world')
@@ -48,8 +55,9 @@ io.on("connection",(socket) =>{
 
     });
 })
-http.listen(8080,() => console.log('server running'))
-
+http.listen(port, function() {
+  console.log(`listening on *:${port}`);
+});
 
 
 

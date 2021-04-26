@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -19,6 +20,7 @@
             }
         </style>
       <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 
         <link rel="stylesheet" href="styles.css">
         <script src="drawer.js"></script>
@@ -31,6 +33,8 @@
         <script src="https://cdn.babylonjs.com/Oimo.js"></script>
         <script src="https://cdn.babylonjs.com/cannon.js"></script>
         <script src="https://cdn.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+
 
        
     </head>
@@ -118,6 +122,7 @@
 
         </div>
       </div>
+
       <div id='join_game' class="card" style="width: 25rem;">
          <h2>Players</h2>
          <ul id='playerlist1'>
@@ -129,12 +134,23 @@
       <span id="checkmark"></span>
       <h1 class='correctText'>Correct</h1>
     </div>
+    <h1 id="knockout" class='knockoutText'></h1>
+
     <div id='incorrect'>
 
         <span id="checkmark1"></span>
         <h1 class='correctText'>Wrong</h1>
       </div>
-    <script src='./game/game.js'>    </script>
+      <button id='forward' ><i class="arrow up"></i></button>
+      <button id='backward' ><i class="arrow down"></i></button>
+      <button id='left' ><i class="arrow left"></i></button>
+      <button id='right' ><i class="arrow right"></i></button>
+      <button id='punch' >Punch</i></button>
+
+
+      <button id='punch' ></button>
+
+    <script  src='./game/game.js'>    </script>
 
 
 <script src='https://cdn.babylonjs.com/cannon.js'>

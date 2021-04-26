@@ -79,10 +79,8 @@ questionSchema = QuestionSchema(many=True)
 
 @app.route('/createQuiz', methods=['POST'])
 def createQuiz():
-    print('hello')
     content = request.json
     title = content['title']
-
     subject=content['subject']
     topic=content['topic']
     cert=content['cert']

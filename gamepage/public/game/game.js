@@ -45,14 +45,13 @@ function makeid(length) {
 }
 
 
-
 //socket logic
-let players = {}
+let players = {};
 let leaderboard = {}
-
-const socket = io("ws://178.62.61.92:8080");
+var knockedOut=false
+const socket = io("http://178.62.61.92:6600");
 var room=''
-var playerid='martin'
+var playerid=''
 socket.on("connection", (socket) =>{
     console.log("connection")
 })
@@ -62,7 +61,19 @@ socket.on("player_joined", ({playerid}) =>{
     players[playerid]=new Player(playerid)
 
     addPlayer(playerid)
+
     
+})
+socket.on("knockout", ({id,playerPunching}) =>{
+    console.log("knockout" + id)
+    if(playerid==id){
+        knockedOut=true
+        setTimeout(function () {knockedOut=false}, 2000)
+
+    knockout(playerPunching)
+
+    
+}
 })
 socket.on("players", (playersobj) =>{
     console.log("players")
@@ -80,7 +91,6 @@ socket.on("players", (playersobj) =>{
 
 socket.on("start_game", (nah) =>{
 
-    console.log("start_game")
     document.getElementById('join_game').style.display ='none'
     nextQuestion()
     
@@ -91,14 +101,11 @@ socket.on("score", ({playerid,playerscore}) =>{
     console.log("player " + playerid + " scored " + playerscore)    
 })
 socket.on("player_moved", ({playerid:playername,x,y,z}) =>{
-    console.log('playermoved')
 
-    console.log(players)
-    console.log('playername')
 
-            console.log(playername)
     players[playername].movePlayer(x,y,z)
 })
+
 function addPlayer(playerid){
     leaderboard[playerid] =-1
     var list =document.getElementById('playerlist')
@@ -210,7 +217,65 @@ const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engi
         // Add your code here matching the playground format
         const scene = createScene(); //Call the createScene function
         // Register a render loop to repeatedly render the scene
+         var manager = new BABYLON.GUI.Container();
          
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+   
+document.getElementById('forward').style.display ='block'
+document.getElementById('backward').style.display ='block'
+document.getElementById('left').style.display ='block'
+document.getElementById('right').style.display ='block'
+document.getElementById('punch').style.display ='block'
+
+
+
+}
+
+
+const forwardbtn=document.getElementById('forward')
+const backwardbtn=document.getElementById('backward')
+const leftbtn=document.getElementById('left')
+const rightbtn=document.getElementById('right')
+const punchbtn=document.getElementById('punch')
+
+
+var forward=false
+var backward=false
+var left=false
+var right=false
+var punch=false
+punchbtn.ontouchstart=() => {
+    punch = true
+}
+punchbtn.ontouchend=() => {
+    punch=false
+}
+
+forwardbtn.ontouchstart=() => {
+    forward = true
+}
+forwardbtn.ontouchend=() => {
+    forward=false
+}
+backwardbtn.ontouchstart=() => {
+    backward = true
+}
+backwardbtn.ontouchend=() => {
+    backward=false
+}
+leftbtn.ontouchstart=() => {
+    left = true
+}
+leftbtn.ontouchend=() => {
+    left=false
+}
+rightbtn.ontouchstart=() => {
+    right = true
+}
+rightbtn.ontouchend=() => {
+    right=false
+}
+
         
         //creating the question box
 
@@ -363,7 +428,7 @@ answerPlane4.material.backFaceCulling = false;
 answerPlane4.position.y=20
 answerPlane4.position.z=30
 answerPlane4.position.x=20
-        answerTextures=[answerTexture,answer2Texture,answer3Texture,answer4Texture]
+       var answerTextures=[answerTexture,answer2Texture,answer3Texture,answer4Texture]
 
 
 
@@ -378,7 +443,12 @@ answerPlane4.position.x=20
 camera.upperRadiusLimit = 50;
     var astronaut=null
     var runningAnim = null
+        var righthookAnim = null
+            var knockoutAnim = null
+
+
         var idleAnim = null
+
         var faceColors = new Array(6);
   faceColors[4] = new BABYLON.Color4(0,1,0,1);   // red top
 
@@ -397,7 +467,7 @@ camera.upperRadiusLimit = 50;
 class Player {
   constructor(playerid) {
     this.playerid= playerid
-    BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut6.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
+    BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut13.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
         const player = newMeshes[0];
         newMeshes[0].position.y=0
         newMeshes[0].name=playerid
@@ -405,24 +475,29 @@ class Player {
         player.scaling.scaleInPlace(4);
         //Lock camera on the character 
         //Get the Samba animation Group
-        runningAnim = scene.getAnimationGroupByName("running");
-        idleAnim = scene.getAnimationGroupByName("idle");
         var skeleton = skeletons[0];
+        // do something
+    });
 
-        var unit = newMeshes[0];
-        unit.showBoundingBox = true;
+
+       
 
 
             
-            })
-}
+            }
 
+    getPlayerId(){
+        return this.playerid
+    }
+    
+  getLocation(){
+                  var mesh = scene.getMeshByName(this.playerid)
+    return mesh.position
+  }
 
 
      movePlayer(x,y,z){
             var mesh = scene.getMeshByName(this.playerid)
-            mesh.rotationQuaternion.x=0
-            mesh.rotationQuaternion.z=0
 
             mesh.position.x =x
             mesh.position.y =y
@@ -444,13 +519,42 @@ class Player {
 
 
 
+     BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut13.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
+        astronaut = newMeshes[0];
+        newMeshes[0].position.y=0
+        newMeshes[0].name='astronaut'
+        //Scale the model down        
+        astronaut.scaling.scaleInPlace(4);
+        //Lock camera on the character 
+        camera.target = astronaut;
+        //Get the Samba animation Group
+        runningAnim = scene.getAnimationGroupByName("run");
+        righthookAnim = scene.getAnimationGroupByName("righthook");
+        knockoutAnim = scene.getAnimationGroupByName("knockout");
+
+        idleAnim = scene.getAnimationGroupByName("idle");
+
+        var skeleton = skeletons[0];
+
+        var unit = newMeshes[0];
+        unit.showBoundingBox = true;
+
+        var yBot = newMeshes[1]
+        // yBot.showBoundingBox = true;
+
+        unit.position.y = 2;
+        yBot.position.y = 0;
+        unit.parent = null;
+
+        unit.physicsImpostor = new BABYLON.PhysicsImpostor(unit, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0.1 ,height:2,width:1}, scene);
+        collider.parent=unit
+     })
      BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "arch.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
         exit=newMeshes[0]
         exit.name='arch1'
         exit.position.x = -25;
         exit.position.y = 0;
         exit.position.z =30;
-        collider.parent = scene.getMeshByName('astronaut')
         
     let action = new BABYLON.ExecuteCodeAction(
         {
@@ -490,32 +594,6 @@ class Player {
     );
         collider.actionManager.registerAction(action);
     });
-     BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "astronaut6.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
-        astronaut = newMeshes[0];
-        newMeshes[0].position.y=0
-        newMeshes[0].name='astronaut'
-        //Scale the model down        
-        astronaut.scaling.scaleInPlace(4);
-        //Lock camera on the character 
-        camera.target = astronaut;
-        //Get the Samba animation Group
-        runningAnim = scene.getAnimationGroupByName("running");
-        idleAnim = scene.getAnimationGroupByName("idle");
-        var skeleton = skeletons[0];
-
-        var unit = newMeshes[0];
-        unit.showBoundingBox = true;
-
-        var yBot = newMeshes[1]
-        // yBot.showBoundingBox = true;
-
-        unit.position.y = 2;
-        yBot.position.y = 0;
-
-        unit.parent = null;
-
-        unit.physicsImpostor = new BABYLON.PhysicsImpostor(unit, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0.1 ,height:2,width:1}, scene);
-     })
 
  BABYLON.SceneLoader.ImportMesh('', "game/3dAssets/", "arch.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
         exit=newMeshes[0]
@@ -604,16 +682,32 @@ class Player {
         
             //draw the image to the mesh
         
+        function knockout(playerPunching){
+            var knockoutText=document.getElementById('knockout')
+            knockoutText.innerHTML=playerPunching+' KNOCKED YOU OUT'
+            knockoutText.style.display = "block";
+            setTimeout(function () {document.getElementById('knockout').style.display = "none";}, 2000)
+            knockoutText.display=""
+            knockoutAnim.start(true, 1.0, knockoutAnim.from, knockoutAnim.to, false);
+        }
+
+        function checkForKnockout(){
+            if(animsLoaded()){
+            const playerLocation=scene.getMeshByName('astronaut').position
+            for (const [key, value] of Object.entries(players)) {
+                const location=value.getLocation()
+                if(BABYLON.Vector3.Distance(playerLocation, location)<5){
+                    console.log("player knocked" +key)
+                    socket.emit('knockout',{room,playerid:key,playerPunching:playerid})
+                }
+            }}
+        }
 
 
-
-
-        engine.runRenderLoop(function () {
-
-                keydown=false
                 animating=false
+        engine.runRenderLoop(function () {
+                keydown=false
                 mesh= scene.getMeshByName('astronaut')
-                
                 if(scene.getMeshByName('astronaut')!=null){
                     if(scene.getMeshByName('astronaut').position.y<-20)
                     { 
@@ -631,23 +725,27 @@ class Player {
                     mesh.rotationQuaternion.z=0
                     }
                 
-                if (inputMap["w"]) {
-                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(.2));
+                if(!animating&&!knockedOut){
+                if (inputMap["w"]|| forward) {
+                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(.15));
                     keydown = true;
                 }
-                if (inputMap["s"]) {
-                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(-.2));
+                if (inputMap["s"]||backward) {
+                    astronaut.moveWithCollisions(astronaut.forward.scaleInPlace(-.15));
                     keydown = true;
                 }
-                if (inputMap["a"]) {
-                    astronaut.rotate(BABYLON.Vector3.Up(), -.2);
+                if (inputMap["a"]||left) {
+                    astronaut.rotate(BABYLON.Vector3.Up(), -.15);
                     keydown = true;
                 }
-                if (inputMap["d"]) {
-                    astronaut.rotate(BABYLON.Vector3.Up(), .2);
+                if (inputMap["d"]||right) {
+                    astronaut.rotate(BABYLON.Vector3.Up(), .15);
                     keydown = true;
                 }
                 if (inputMap["b"]) {
+                    keydown = true;
+                }
+                 if (inputMap["e"]||punch) {
                     keydown = true;
                 }
                 if(keydown){
@@ -657,22 +755,34 @@ class Player {
                 if(animsLoaded())
               {  if (keydown) {
                     if (!animating) {
-                        animating = true;
-                        if (inputMap["w"]) {
+                        if (inputMap["w"]|| forward) {
                             //Walk backwards
                             runningAnim.start(true, 1.0, runningAnim.from, runningAnim.to, false);
+
+                        }
+                         if (inputMap["e"]||punch) {
+                            //Walk backwards
+                            checkForKnockout()
+                            setTimeout(function () {animating=false;}, 1000)
+                            animating=true;
+                            righthookAnim.start(true, 2.0, righthookAnim.from, righthookAnim.to, false);
+                            punch=false
                         }
                         else if
                             (inputMap["b"]) {
                             //Samba!
                             runningAnim.start(true, 1.0, runningAnim.from, runningAnim.to, false);
+
                         }
                     }
                       
                 }
                  else {
+                            if(!knockedOut&&!animating){
                             scene.stopAllAnimations()
-                             idleAnim.start(true, 1.0, idleAnim.from, idleAnim.to, false);
+                            idleAnim.start(true, 1.0, idleAnim.from, idleAnim.to, false);
+                        }
+                        }
                         }
                 }
                 scene.render();
@@ -693,7 +803,12 @@ class Player {
         }
        
 
+function playPlayerAnimation(name,anim){
+    switch(name){
+        case "upper":
 
+    }
+}
 
 function animsLoaded(){
     if(runningAnim!=null){
@@ -708,7 +823,7 @@ var choseOption=false
 
 
 function nextQuestion(){
-
+    console.log('nextQuestion')
     if((selection!=null||questionNumber==0)&&questionNumber<questions.length){
         var textures=[...answerTextures];
         console.log('drawing')

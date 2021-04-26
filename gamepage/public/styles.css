@@ -203,6 +203,78 @@ left: 47%;
 text-align: center;
 
 }
+.knockoutText{
+  position: fixed;
+  top: 60%;
+  left: 47%;
+  text-align: center;
+  display: none
+
+  
+  }
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+  
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+  #forward{
+    display: none;
+    position: fixed;
+    bottom: 13%;
+    left: 20%;
+    height:10em;
+    width:10em;
+  }
+  #backward{
+    display: none;
+    position: fixed;
+    bottom: 5%;
+    left: 20%;
+    height:10em;
+    width:10em;
+  } #right{
+    display: none;
+    position: fixed;
+    bottom: 5%;
+    left: 37%;
+    height:10em;
+    width:10em;
+  } #left{
+    display: none;
+    position: fixed;
+    bottom: 5%;
+    left: 2%;
+    height:10em;
+    width:10em;
+  }
+  #punch{
+    display: none;
+    position: fixed;
+    bottom: 15%;
+    right: 2%;
+    height:10em;
+    width:10em;
+  }
 #multigui{
   display: none
 }
